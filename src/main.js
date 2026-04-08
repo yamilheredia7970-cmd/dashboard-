@@ -1,104 +1,17 @@
 import './index.css';
 
-document.querySelector('#app')!.innerHTML = `
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-    <header class="mb-8 flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-      <div>
-        <h1 class="text-3xl font-bold text-slate-900 tracking-tight">Apple Inc. (AAPL) Executive Dashboard</h1>
-        <p class="text-sm text-slate-500 mt-1">Análisis de Mercado & Comportamiento Técnico</p>
-      </div>
-      <div class="flex flex-col sm:flex-row items-start sm:items-center gap-4 lg:gap-6">
-        <!-- Competitor Toggles -->
-        <div class="flex items-center gap-3">
-          <label class="text-sm font-medium text-slate-700 whitespace-nowrap">Comparar con:</label>
-          <div class="flex gap-2" id="competitor-toggles">
-            <label class="inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="MSFT" class="sr-only peer competitor-cb">
-              <div class="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-300 peer-checked:bg-purple-50 peer-checked:border-purple-500 peer-checked:text-purple-700 text-slate-600 bg-white transition-colors hover:bg-slate-50">MSFT</div>
-            </label>
-            <label class="inline-flex items-center cursor-pointer">
-              <input type="checkbox" value="GOOGL" class="sr-only peer competitor-cb">
-              <div class="px-3 py-1.5 text-xs font-medium rounded-lg border border-slate-300 peer-checked:bg-amber-50 peer-checked:border-amber-500 peer-checked:text-amber-700 text-slate-600 bg-white transition-colors hover:bg-slate-50">GOOGL</div>
-            </label>
-          </div>
-        </div>
-        
-        <!-- Date Filter -->
-        <div class="flex items-center gap-3">
-          <label for="date-filter" class="text-sm font-medium text-slate-700 whitespace-nowrap">Período:</label>
-          <select id="date-filter" class="bg-white border border-slate-300 text-slate-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 shadow-sm cursor-pointer">
-            <option value="all">Histórico Completo</option>
-            <option value="ytd">Año hasta la fecha (YTD)</option>
-            <option value="90d">Últimos 90 días</option>
-            <option value="30d">Últimos 30 días</option>
-          </select>
-        </div>
-      </div>
-    </header>
-
-    <!-- KPIs -->
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8" id="kpi-container">
-      <div class="animate-pulse bg-white rounded-xl shadow-sm border border-slate-200 p-5 h-24"></div>
-      <div class="animate-pulse bg-white rounded-xl shadow-sm border border-slate-200 p-5 h-24"></div>
-      <div class="animate-pulse bg-white rounded-xl shadow-sm border border-slate-200 p-5 h-24"></div>
-      <div class="animate-pulse bg-white rounded-xl shadow-sm border border-slate-200 p-5 h-24"></div>
-    </div>
-
-    <!-- Main Chart -->
-    <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5 mb-8">
-      <div class="flex justify-between items-center mb-4">
-        <h2 class="text-lg font-semibold text-slate-800">Acción del Precio & Comparativa de Rendimiento</h2>
-        <span class="text-xs text-slate-500 bg-slate-100 px-2 py-1 rounded">Activos comparados se normalizan al precio base de AAPL</span>
-      </div>
-      <div id="candlestick-chart" class="w-full h-[500px]"></div>
-    </div>
-
-    <!-- Bottom Panels -->
-    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-        <h2 class="text-lg font-semibold text-slate-800 mb-4">Volumen de Transacciones (AAPL)</h2>
-        <div id="volume-chart" class="w-full h-[350px]"></div>
-      </div>
-      <div class="bg-white rounded-xl shadow-sm border border-slate-200 p-5">
-        <h2 class="text-lg font-semibold text-slate-800 mb-4">Riesgo vs Recompensa (Volumen vs Volatilidad)</h2>
-        <div id="scatter-chart" class="w-full h-[350px]"></div>
-      </div>
-    </div>
-
-    <!-- Insights -->
-    <div class="bg-slate-900 rounded-xl shadow-sm p-6 text-white">
-      <h2 class="text-xl font-semibold mb-4">Insights Ejecutivos</h2>
-      <ul class="space-y-4 text-slate-300 text-sm">
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-blue-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6"></path></svg>
-          <div><strong class="text-white">Resiliencia y Liquidez:</strong> El alto volumen promedio garantiza liquidez profunda para maniobras institucionales sin impacto adverso en el precio (slippage).</div>
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-blue-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path></svg>
-          <div><strong class="text-white">Reversión a la Media:</strong> Las desviaciones extremas del precio respecto a su media móvil (mavg) rara vez se sostienen, presentando oportunidades tácticas de arbitraje o rebalanceo.</div>
-        </li>
-        <li class="flex items-start">
-          <svg class="w-5 h-5 text-blue-400 mr-3 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
-          <div><strong class="text-white">Squeeze de Volatilidad:</strong> Contracciones históricas en la amplitud de las bandas de Bollinger han precedido invariablemente a movimientos direccionales violentos.</div>
-        </li>
-      </ul>
-    </div>
-  </div>
-`;
-
-let globalData: any[] = [];
+let globalData = [];
 let currentFilter = 'all';
 
 async function initDashboard() {
   try {
-    // @ts-ignore
     const rawData = await d3.csv('https://raw.githubusercontent.com/plotly/datasets/master/finance-charts-apple.csv');
     
     // Generate correlated mock data for MSFT and GOOGL to enable realistic comparisons
     let msftPrice = 100;
     let googlPrice = 500;
     
-    globalData = rawData.map((d: any, i: number) => {
+    globalData = rawData.map((d, i) => {
       if (i > 0) {
         const prevAapl = parseFloat(rawData[i-1]['AAPL.Close']);
         const currAapl = parseFloat(d['AAPL.Close']);
@@ -124,7 +37,7 @@ async function initDashboard() {
     const filterSelect = document.getElementById('date-filter');
     if (filterSelect) {
       filterSelect.addEventListener('change', (e) => {
-        currentFilter = (e.target as HTMLSelectElement).value;
+        currentFilter = e.target.value;
         renderDashboard();
       });
     }
@@ -189,7 +102,7 @@ function renderDashboard() {
 
   let peak = closes[0];
   let maxDrawdown = 0;
-  closes.forEach((price: number) => {
+  closes.forEach((price) => {
     if (price > peak) peak = price;
     const drawdown = peak ? (peak - price) / peak : 0;
     if (drawdown > maxDrawdown) maxDrawdown = drawdown;
@@ -248,7 +161,7 @@ function renderDashboard() {
   // --- Main Chart Traces ---
   const aaplBasePrice = closes[0];
   
-  const traces: any[] = [
+  const traces = [
     {
       x: dates, close: closes, decreasing: {line: {color: '#ef4444'}}, high: highs,
       increasing: {line: {color: '#10b981'}}, line: {color: 'rgba(31,119,180,1)'},
@@ -261,12 +174,11 @@ function renderDashboard() {
 
   // Add Competitors if selected
   const checkboxes = document.querySelectorAll('.competitor-cb:checked');
-  const selectedCompetitors = Array.from(checkboxes).map((cb: any) => cb.value);
+  const selectedCompetitors = Array.from(checkboxes).map(cb => cb.value);
 
   if (selectedCompetitors.includes('MSFT')) {
     const msftRaw = filteredData.map(d => d.MSFT);
     const msftBase = msftRaw[0];
-    // Normalize to AAPL's starting price for direct visual comparison
     const msftNorm = msftRaw.map(p => p * (aaplBasePrice / msftBase));
     traces.push({
       x: dates, y: msftNorm, type: 'scatter', mode: 'lines', name: 'MSFT (Norm.)',
@@ -277,7 +189,6 @@ function renderDashboard() {
   if (selectedCompetitors.includes('GOOGL')) {
     const googlRaw = filteredData.map(d => d.GOOGL);
     const googlBase = googlRaw[0];
-    // Normalize to AAPL's starting price for direct visual comparison
     const googlNorm = googlRaw.map(p => p * (aaplBasePrice / googlBase));
     traces.push({
       x: dates, y: googlNorm, type: 'scatter', mode: 'lines', name: 'GOOGL (Norm.)',
@@ -295,11 +206,10 @@ function renderDashboard() {
     plot_bgcolor: 'transparent',
     hovermode: 'x unified'
   };
-  // @ts-ignore
   Plotly.react('candlestick-chart', traces, layoutCandle, {responsive: true});
 
   // --- Volume Chart ---
-  const volumeColors = directions.map((d: string) => d === 'Increasing' ? '#10b981' : '#ef4444');
+  const volumeColors = directions.map(d => d === 'Increasing' ? '#10b981' : '#ef4444');
   const traceVol = { x: dates, y: volumes, type: 'bar', marker: {color: volumeColors}, name: 'Volumen' };
   const layoutVol = {
     margin: { t: 10, b: 40, l: 50, r: 20 },
@@ -308,11 +218,10 @@ function renderDashboard() {
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent'
   };
-  // @ts-ignore
   Plotly.react('volume-chart', [traceVol], layoutVol, {responsive: true});
 
   // --- Scatter Chart ---
-  const intradayVol = highs.map((h: number, i: number) => h - lows[i]);
+  const intradayVol = highs.map((h, i) => h - lows[i]);
   const traceScatter = {
     x: volumes, y: intradayVol, mode: 'markers', type: 'scatter',
     marker: { color: '#3b82f6', opacity: 0.5, size: 8 }, name: 'Días'
@@ -324,7 +233,6 @@ function renderDashboard() {
     paper_bgcolor: 'transparent',
     plot_bgcolor: 'transparent'
   };
-  // @ts-ignore
   Plotly.react('scatter-chart', [traceScatter], layoutScatter, {responsive: true});
 }
 
